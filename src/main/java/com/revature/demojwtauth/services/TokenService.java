@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.time.Duration;
@@ -56,9 +57,14 @@ public class TokenService {
 
     }
 
-//    public Object parseToken(String token) {
-//        Jws<Claims> claims = Jwts.parser()
-//                .setSigningKeyResolver()
-//
-//    }
+    public Jws<Claims> parseToken(String token) {
+        String key = env.getProperty("jwt-secret-key");
+        SecretKey decodedKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(key));
+
+        Jws<Claims> claims = Jwts.parser()
+                .verifyWith(decodedKey)
+                .build().
+                parseSignedClaims(token);
+        return claims;
+    }
 }
