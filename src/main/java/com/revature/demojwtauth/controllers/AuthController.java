@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class AuthController {
             cookie.setDomain("localhost");
             cookie.setPath("/");
             response.addCookie(cookie);
+
+
 
         } else {
             throw new BadAuthenticationException("username/password incorrect");
